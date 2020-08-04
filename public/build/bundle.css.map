@@ -1,0 +1,14 @@
+{
+  "version": 3,
+  "file": "bundle.css",
+  "sources": [
+    "..\\..\\BigHeader.svelte",
+    "..\\..\\PhotoList.svelte"
+  ],
+  "sourcesContent": [
+    "<script>\r\n  export let hashtag;\r\n</script>\r\n\r\n<h1>#{hashtag}</h1>\r\n\r\n<style>\r\n  h1 {\r\n    color: #ff3e00;\r\n    text-transform: uppercase;\r\n    font-size: 4em;\r\n    font-weight: 100;\r\n  }\r\n</style>",
+    "<script>\r\nimport { onMount } from 'svelte';\r\n\r\nlet photos = [];\r\n\r\nonMount(async function() {\r\n    try {\r\n    const res = await fetch(`https://www.instagram.com/explore/tags/ceritanyadeveloper/?__a=1`);\r\n    const data = await res.json();\r\n    photos = data.graphql.hashtag.edge_hashtag_to_media.edges;\r\n    } catch (err) {\r\n        console.error(err);\r\n    }\r\n});\r\n\r\nfunction truncate_words(text, length) {\r\n    if (text.length <= length) {\r\n        return text;\r\n        } else {\r\n            return `${text.slice(0, length)}...`;\r\n    }\r\n}\r\n</script>\r\n\r\n\r\n\r\n<div class=\"container photolist\">\r\n  {#each photos as photo}\r\n    <div class=\"card\">\r\n      <figure class=\"image\">\r\n        <img src=\"{photo.node.thumbnail_src}\" alt=\"thumbnail\"/>\r\n        </figure>\r\n      <div class=\"card-content\">\r\n        <div class=\"content\">\r\n          <p>{truncate_words(photo.node.edge_media_to_caption.edges[0].node.text, 200)}</p>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  {/each}\r\n</div>\r\n\r\n<style>\r\n  .container {\r\n    display: grid;\r\n    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));\r\n    grid-gap: 0.5em;\r\n  }\r\n\r\n  .card {\r\n    max-width: 90%;\r\n    height: max-content;\r\n    border: 1px solid #cacaca;\r\n    box-shadow: 5px 5px 5px 0px rgba(202, 202, 202, 1);\r\n  }\r\n</style>"
+  ],
+  "names": [],
+  "mappings": "AAOE,EAAE,eAAC,CAAC,AACF,KAAK,CAAE,OAAO,CACd,cAAc,CAAE,SAAS,CACzB,SAAS,CAAE,GAAG,CACd,WAAW,CAAE,GAAG,AAClB,CAAC;AC8BD,UAAU,eAAC,CAAC,AACV,OAAO,CAAE,IAAI,CACb,qBAAqB,CAAE,OAAO,SAAS,CAAC,CAAC,OAAO,KAAK,CAAC,CAAC,GAAG,CAAC,CAAC,CAC5D,QAAQ,CAAE,KAAK,AACjB,CAAC,AAED,KAAK,eAAC,CAAC,AACL,SAAS,CAAE,GAAG,CACd,MAAM,CAAE,WAAW,CACnB,MAAM,CAAE,GAAG,CAAC,KAAK,CAAC,OAAO,CACzB,UAAU,CAAE,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,KAAK,GAAG,CAAC,CAAC,GAAG,CAAC,CAAC,GAAG,CAAC,CAAC,CAAC,CAAC,AACpD,CAAC"
+}
